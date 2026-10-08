@@ -1,0 +1,41 @@
+{
+  "entities": {
+    "Kunden": {
+      "placeholders_set": 8,
+      "defaults_keys": [],
+      "computed_keys": [],
+      "reason": "Kunden sind reine Stammdaten ohne numerische Felder, daher keine Formeln oder Standardwerte."
+    },
+    "Fahrräder": {
+      "placeholders_set": 8,
+      "defaults_keys": [],
+      "computed_keys": [],
+      "reason": "Reine Stammdaten ohne numerische Felder, daher keine Formeln und keine sinnvollen Standardwerte."
+    },
+    "Reparaturaufträge": {
+      "placeholders_set": 6,
+      "defaults_keys": [
+        "wunschtermin",
+        "prioritaet",
+        "status"
+      ],
+      "computed_keys": [],
+      "reason": "Keine Formel, da keine numerischen Felder oder Preise vorhanden sind und die Termine kein Datumspaar für eine Dauer bilden."
+    },
+    "Ersatzteile": {
+      "placeholders_set": 4,
+      "defaults_keys": [],
+      "computed_keys": [],
+      "reason": "Reine Stammdaten ohne Datumspaare oder Verknüpfungen, daher keine Formeln und keine sinnvollen Standardwerte."
+    },
+    "Kostenvoranschläge": {
+      "placeholders_set": 6,
+      "defaults_keys": [
+        "datum",
+        "freigabe_status"
+      ],
+      "computed_keys": [],
+      "reason": "Keine Formel, da ersatzteile eine Mehrfachauswahl ist, deren Preise ohne Mengen nicht per applookup summierbar sind, und der Gesamtbetrag auch Arbeitsleistung enthält."
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "pages": {
+    "en": {
+      "Alle Ersatzteile ausreichend auf Lager.": "All spare parts sufficiently in stock.",
+      "Alle Kostenvoranschläge sind entschieden.": "All estimates have been decided.",
+      "Anstehende Übergaben": "Upcoming handovers",
+      "Auftrag → {0}": "Order → {0}",
+      "Bestand {0}": "Stock {0}",
+      "Dringend offen": "Urgent",
+      "Ersatzteile knapp": "Low on spare parts",
+      "Freigabe offen": "Approval pending",
+      "Heute holen {0} ihr Rad ab.": "Today {0} are picking up their bike.",
+      "Keine offenen Übergaben — die Werkstatt ist startklar.": "No pending handovers — the workshop is ready to go.",
+      "Keine Übergabe geplant.": "No handover scheduled.",
+      "Kostenvoranschlag freigegeben": "Estimate approved",
+      "Kostenvoranschlag wartet": "Estimate pending",
+      "Neuer Auftrag": "New order",
+      "Nächste Übergabe: {0} am {1}.": "Next handover: {0} on {1}.",
+      "Offen": "Open",
+      "Weiter: {0}": "Next: {0}",
+      "{0} {1} auf eine Freigabe.": "{0} {1} awaiting approval.",
+      "— Übergabe überfällig (seit {0}), Status: {1}.": "— Handover overdue (since {0}), status: {1}.",
+      "✓ Freigeben": "✓ Approve"
+    }
+  },
+  "v": 1
+}

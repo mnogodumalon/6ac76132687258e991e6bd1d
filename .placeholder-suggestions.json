@@ -1,0 +1,44 @@
+{
+  "KundenDialog.tsx": {
+    "kunde_vorname": "z. B. Anna",
+    "kunde_nachname": "z. B. Müller",
+    "email": "z. B. anna@beispiel.de",
+    "strasse": "z. B. Hauptstraße",
+    "hausnummer": "z. B. 12a",
+    "plz": "z. B. 10115",
+    "ort": "z. B. Berlin",
+    "bemerkung": "Was sollten wir noch wissen?"
+  },
+  "FahrraederDialog.tsx": {
+    "besitzer": "Wem gehört das Rad?",
+    "marke": "z. B. Cube",
+    "modell": "z. B. Kathmandu Pro",
+    "fahrradtyp": "z. B. Citybike, E-Bike",
+    "rahmengroesse": "z. B. 54 cm",
+    "rahmennummer": "z. B. WTU123456789",
+    "farbe": "z. B. Anthrazit",
+    "kaufdatum": "Wann wurde es gekauft?"
+  },
+  "ReparaturauftraegeDialog.tsx": {
+    "kunde": "Welcher Kunde?",
+    "fahrrad": "Welches Fahrrad?",
+    "problembeschreibung": "Was ist defekt?",
+    "wunschtermin": "Wann soll die Reparatur starten?",
+    "uebergabetermin": "Wann wird das Fahrrad übergeben?",
+    "status": "z. B. Angemeldet, Bestätigt"
+  },
+  "ErsatzteileDialog.tsx": {
+    "bezeichnung": "z. B. Fahrradkette 11-fach",
+    "artikelnummer": "z. B. ET-2026-001",
+    "preis": "z. B. 24,90",
+    "lagerbestand": "z. B. 15"
+  },
+  "KostenvoranschlaegeDialog.tsx": {
+    "reparaturauftrag": "Welcher Reparaturauftrag?",
+    "datum": "Wann wurde der Voranschlag erstellt?",
+    "positionen": "Eine Position pro Zeile",
+    "ersatzteile": "Welche Ersatzteile?",
+    "gesamtbetrag": "z. B. 149,90",
+    "bemerkung": "Hinweise zum Voranschlag"
+  }
+}
