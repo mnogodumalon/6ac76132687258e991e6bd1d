@@ -289,7 +289,7 @@ export function KundenDialog({ open, onClose, onSubmit, defaultValues, recordId,
         <Label htmlFor="kunde_vorname">{fieldLabel('kunden', 'kunde_vorname')} <span className="text-destructive" aria-hidden="true">*</span></Label>
         <Input
           id="kunde_vorname"
-          placeholder="z. B. Anna"
+          placeholder=""
           value={fields.kunde_vorname ?? ''}
           onChange={e => setFields(f => ({ ...f, kunde_vorname: e.target.value }))}
           required
@@ -304,7 +304,7 @@ export function KundenDialog({ open, onClose, onSubmit, defaultValues, recordId,
         <Label htmlFor="kunde_nachname">{fieldLabel('kunden', 'kunde_nachname')} <span className="text-destructive" aria-hidden="true">*</span></Label>
         <Input
           id="kunde_nachname"
-          placeholder="z. B. Müller"
+          placeholder=""
           value={fields.kunde_nachname ?? ''}
           onChange={e => setFields(f => ({ ...f, kunde_nachname: e.target.value }))}
           required
@@ -321,7 +321,7 @@ export function KundenDialog({ open, onClose, onSubmit, defaultValues, recordId,
           id="email"
           type="email"
           inputMode="email"
-          placeholder="z. B. anna@beispiel.de"
+          placeholder=""
           value={fields.email ?? ''}
           onChange={e => setFields(f => ({ ...f, email: e.target.value }))}
           required
@@ -349,7 +349,7 @@ export function KundenDialog({ open, onClose, onSubmit, defaultValues, recordId,
         <Label htmlFor="strasse">{fieldLabel('kunden', 'strasse')}</Label>
         <Input
           id="strasse"
-          placeholder="z. B. Hauptstraße"
+          placeholder=""
           value={fields.strasse ?? ''}
           onChange={e => setFields(f => ({ ...f, strasse: e.target.value }))}
         />
@@ -360,7 +360,7 @@ export function KundenDialog({ open, onClose, onSubmit, defaultValues, recordId,
         <Label htmlFor="hausnummer">{fieldLabel('kunden', 'hausnummer')}</Label>
         <Input
           id="hausnummer"
-          placeholder="z. B. 12a"
+          placeholder=""
           value={fields.hausnummer ?? ''}
           onChange={e => setFields(f => ({ ...f, hausnummer: e.target.value }))}
         />
@@ -371,7 +371,7 @@ export function KundenDialog({ open, onClose, onSubmit, defaultValues, recordId,
         <Label htmlFor="plz">{fieldLabel('kunden', 'plz')}</Label>
         <Input
           id="plz"
-          placeholder="z. B. 10115"
+          placeholder=""
           value={fields.plz ?? ''}
           onChange={e => setFields(f => ({ ...f, plz: e.target.value }))}
         />
@@ -382,7 +382,7 @@ export function KundenDialog({ open, onClose, onSubmit, defaultValues, recordId,
         <Label htmlFor="ort">{fieldLabel('kunden', 'ort')}</Label>
         <Input
           id="ort"
-          placeholder="z. B. Berlin"
+          placeholder=""
           value={fields.ort ?? ''}
           onChange={e => setFields(f => ({ ...f, ort: e.target.value }))}
         />
@@ -393,7 +393,7 @@ export function KundenDialog({ open, onClose, onSubmit, defaultValues, recordId,
         <Label htmlFor="bemerkung">{fieldLabel('kunden', 'bemerkung')}</Label>
         <Textarea
           id="bemerkung"
-          placeholder="Was sollten wir noch wissen?"
+          placeholder=""
           value={fields.bemerkung ?? ''}
           onChange={e => setFields(f => ({ ...f, bemerkung: e.target.value }))}
           rows={3}

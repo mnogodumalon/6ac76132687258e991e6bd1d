@@ -160,7 +160,9 @@ export default function DashboardOverview({ data }: { data: DashboardData }) {
   const context = todays.length > 0
     ? tx`Heute holen ${namen(todays)} ihr Rad ab.`
     : waiting.length > 0
-      ? tx`${namen(waiting)} ${waiting.length === 1 ? 'wartet' : 'warten'} auf eine Freigabe.`
+      ? (waiting.length === 1
+          ? tx`${namen(waiting)} wartet auf eine Freigabe.`
+          : tx`${namen(waiting)} warten auf eine Freigabe.`)
       : upcoming.length > 0
         ? tx`Nächste Übergabe: ${upcoming[0].kundeName} am ${formatDate(upcoming[0].fields.uebergabetermin)}.`
         : tx`Keine offenen Übergaben — die Werkstatt ist startklar.`;

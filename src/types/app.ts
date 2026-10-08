@@ -110,6 +110,7 @@ export interface Ersatzteile {
     artikelnummer?: string;
     preis?: number;
     lagerbestand?: number;
+    lieferant?: string;
   };
 }
 
@@ -145,14 +146,14 @@ export const APP_IDS = {
 
 export const LOOKUP_OPTIONS: Record<string, Record<string, {key: string, label: string}[]>> = {
   'fahrraeder': {
-    fahrradtyp: [{ key: "trekkingrad", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "trekkingrad") ?? "Trekkingrad"; } }, { key: "mountainbike", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "mountainbike") ?? "Mountainbike"; } }, { key: "rennrad", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "rennrad") ?? "Rennrad"; } }, { key: "ebike", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "ebike") ?? "E-Bike"; } }, { key: "kinderrad", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "kinderrad") ?? "Kinderrad"; } }, { key: "lastenrad", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "lastenrad") ?? "Lastenrad"; } }, { key: "sonstiges", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "sonstiges") ?? "Sonstiges"; } }, { key: "citybike", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "citybike") ?? "Citybike"; } }],
+    fahrradtyp: [{ key: "citybike", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "citybike") ?? "Citybike"; } }, { key: "trekkingrad", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "trekkingrad") ?? "Trekkingrad"; } }, { key: "mountainbike", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "mountainbike") ?? "Mountainbike"; } }, { key: "rennrad", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "rennrad") ?? "Rennrad"; } }, { key: "ebike", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "ebike") ?? "E-Bike"; } }, { key: "kinderrad", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "kinderrad") ?? "Kinderrad"; } }, { key: "lastenrad", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "lastenrad") ?? "Lastenrad"; } }, { key: "sonstiges", get label() { return lookupLabel('fahrraeder', 'fahrradtyp', "sonstiges") ?? "Sonstiges"; } }],
   },
   'reparaturauftraege': {
-    prioritaet: [{ key: "niedrig", get label() { return lookupLabel('reparaturauftraege', 'prioritaet', "niedrig") ?? "Niedrig"; } }, { key: "normal", get label() { return lookupLabel('reparaturauftraege', 'prioritaet', "normal") ?? "Normal"; } }, { key: "hoch", get label() { return lookupLabel('reparaturauftraege', 'prioritaet', "hoch") ?? "Hoch"; } }, { key: "dringend", get label() { return lookupLabel('reparaturauftraege', 'prioritaet', "dringend") ?? "Dringend"; } }],
+    prioritaet: [{ key: "normal", get label() { return lookupLabel('reparaturauftraege', 'prioritaet', "normal") ?? "Normal"; } }, { key: "hoch", get label() { return lookupLabel('reparaturauftraege', 'prioritaet', "hoch") ?? "Hoch"; } }, { key: "niedrig", get label() { return lookupLabel('reparaturauftraege', 'prioritaet', "niedrig") ?? "Niedrig"; } }, { key: "dringend", get label() { return lookupLabel('reparaturauftraege', 'prioritaet', "dringend") ?? "Dringend"; } }],
     status: [{ key: "angemeldet", get label() { return lookupLabel('reparaturauftraege', 'status', "angemeldet") ?? "Angemeldet"; } }, { key: "bestaetigt", get label() { return lookupLabel('reparaturauftraege', 'status', "bestaetigt") ?? "Bestätigt"; } }, { key: "in_bearbeitung", get label() { return lookupLabel('reparaturauftraege', 'status', "in_bearbeitung") ?? "In Bearbeitung"; } }, { key: "wartet_auf_freigabe", get label() { return lookupLabel('reparaturauftraege', 'status', "wartet_auf_freigabe") ?? "Wartet auf Freigabe"; } }, { key: "fertig", get label() { return lookupLabel('reparaturauftraege', 'status', "fertig") ?? "Fertig"; } }, { key: "uebergeben", get label() { return lookupLabel('reparaturauftraege', 'status', "uebergeben") ?? "Übergeben"; } }, { key: "storniert", get label() { return lookupLabel('reparaturauftraege', 'status', "storniert") ?? "Storniert"; } }],
   },
   'kostenvoranschlaege': {
-    freigabe_status: [{ key: "freigegeben", get label() { return lookupLabel('kostenvoranschlaege', 'freigabe_status', "freigegeben") ?? "Freigegeben"; } }, { key: "abgelehnt", get label() { return lookupLabel('kostenvoranschlaege', 'freigabe_status', "abgelehnt") ?? "Abgelehnt"; } }, { key: "offen", get label() { return lookupLabel('kostenvoranschlaege', 'freigabe_status', "offen") ?? "Offen"; } }],
+    freigabe_status: [{ key: "offen", get label() { return lookupLabel('kostenvoranschlaege', 'freigabe_status', "offen") ?? "Offen"; } }, { key: "freigegeben", get label() { return lookupLabel('kostenvoranschlaege', 'freigabe_status', "freigegeben") ?? "Freigegeben"; } }, { key: "abgelehnt", get label() { return lookupLabel('kostenvoranschlaege', 'freigabe_status', "abgelehnt") ?? "Abgelehnt"; } }],
   },
 };
 
@@ -190,7 +191,7 @@ export const FIELD_TYPES: Record<string, Record<string, string>> = {
     'kunde': 'applookup/select',
     'fahrrad': 'applookup/select',
     'problembeschreibung': 'string/textarea',
-    'wunschtermin': 'date/datetimeminute',
+    'wunschtermin': 'date/date',
     'uebergabetermin': 'date/date',
     'prioritaet': 'lookup/radio',
     'status': 'lookup/select',
@@ -200,6 +201,7 @@ export const FIELD_TYPES: Record<string, Record<string, string>> = {
     'artikelnummer': 'string/text',
     'preis': 'number',
     'lagerbestand': 'number',
+    'lieferant': 'string/text',
   },
   'kostenvoranschlaege': {
     'reparaturauftrag': 'applookup/select',

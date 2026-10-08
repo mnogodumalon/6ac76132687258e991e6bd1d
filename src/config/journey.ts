@@ -13,10 +13,10 @@
  *
  * Facts from the metadata — candidates, NOT decisions:
  *   - kunden: no date pair, no references
- *   - fahrraeder: applookups besitzer→kunden · lookups fahrradtyp[trekkingrad|mountainbike|rennrad|ebike|kinderrad|lastenrad|sonstiges|citybike]
- *   - reparaturauftraege: applookups kunde→kunden, fahrrad→fahrraeder · lookups prioritaet[niedrig|normal|hoch|dringend], status[angemeldet|bestaetigt|in_bearbeitung|wartet_auf_freigabe|fertig|uebergeben|storniert]
+ *   - fahrraeder: applookups besitzer→kunden · lookups fahrradtyp[citybike|trekkingrad|mountainbike|rennrad|ebike|kinderrad|lastenrad|sonstiges]
+ *   - reparaturauftraege: applookups kunde→kunden, fahrrad→fahrraeder · lookups prioritaet[normal|hoch|niedrig|dringend], status[angemeldet|bestaetigt|in_bearbeitung|wartet_auf_freigabe|fertig|uebergeben|storniert]
  *   - ersatzteile: no date pair, no references
- *   - kostenvoranschlaege: applookups reparaturauftrag→reparaturauftraege, ersatzteile→ersatzteile · lookups freigabe_status[freigegeben|abgelehnt|offen]
+ *   - kostenvoranschlaege: applookups reparaturauftrag→reparaturauftraege, ersatzteile→ersatzteile · lookups freigabe_status[offen|freigegeben|abgelehnt]
  */
 import type { EntityKey } from '@/lib/journey/rules';
 

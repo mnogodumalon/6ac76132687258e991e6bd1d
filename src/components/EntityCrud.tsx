@@ -44,7 +44,7 @@
  *   kunden: kunde_vorname, kunde_nachname, email, telefon, strasse, hausnummer, plz, ort, …  ·  ← fahrraeder (list + contextual +) · ← reparaturauftraege (list + contextual +)
  *   fahrraeder: besitzer, marke, modell, fahrradtyp, rahmengroesse, rahmennummer, farbe, kaufdatum  ·  → kunden · ← reparaturauftraege (list + contextual +)
  *   reparaturauftraege: kunde, fahrrad, problembeschreibung, wunschtermin, uebergabetermin, prioritaet, status  ·  → kunden · → fahrraeder · ← kostenvoranschlaege (list + contextual +)
- *   ersatzteile: bezeichnung, artikelnummer, preis, lagerbestand  ·  ← kostenvoranschlaege (list + contextual + + choose existing)
+ *   ersatzteile: bezeichnung, artikelnummer, preis, lagerbestand, lieferant  ·  ← kostenvoranschlaege (list + contextual + + choose existing)
  *   kostenvoranschlaege: reparaturauftrag, datum, positionen, ersatzteile, gesamtbetrag, freigabe_status, bemerkung  ·  → reparaturauftraege · → ersatzteile
  */
 import { useState, useMemo, type ReactNode } from 'react';

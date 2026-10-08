@@ -222,7 +222,7 @@ export function ErsatzteileDialog({ open, onClose, onSubmit, defaultValues, reco
         }
       }
       const photoContext = contextParts.length ? contextParts.join('\n') : undefined;
-      const schema = `{\n  "bezeichnung": string | null, // Bezeichnung\n  "artikelnummer": string | null, // Artikelnummer\n  "preis": number | null, // Preis in Euro\n  "lagerbestand": number | null, // Lagerbestand\n}`;
+      const schema = `{\n  "bezeichnung": string | null, // Bezeichnung\n  "artikelnummer": string | null, // Artikelnummer\n  "preis": number | null, // Preis in Euro\n  "lagerbestand": number | null, // Lagerbestand\n  "lieferant": string | null, // Lieferant\n}`;
       const raw = await extractFromInput<Record<string, unknown>>(schema, {
         dataUri: uri,
         userText: aiText.trim() || undefined,
@@ -289,7 +289,7 @@ export function ErsatzteileDialog({ open, onClose, onSubmit, defaultValues, reco
         <Label htmlFor="bezeichnung">{fieldLabel('ersatzteile', 'bezeichnung')} <span className="text-destructive" aria-hidden="true">*</span></Label>
         <Input
           id="bezeichnung"
-          placeholder="z. B. Fahrradkette 11-fach"
+          placeholder=""
           value={fields.bezeichnung ?? ''}
           onChange={e => setFields(f => ({ ...f, bezeichnung: e.target.value }))}
           required
@@ -304,7 +304,7 @@ export function ErsatzteileDialog({ open, onClose, onSubmit, defaultValues, reco
         <Label htmlFor="artikelnummer">{fieldLabel('ersatzteile', 'artikelnummer')}</Label>
         <Input
           id="artikelnummer"
-          placeholder="z. B. ET-2026-001"
+          placeholder=""
           value={fields.artikelnummer ?? ''}
           onChange={e => setFields(f => ({ ...f, artikelnummer: e.target.value }))}
         />
@@ -319,7 +319,7 @@ export function ErsatzteileDialog({ open, onClose, onSubmit, defaultValues, reco
           inputMode="decimal"
           step="any"
           {...numberInputProps(formEnhancements, 'preis')}
-          placeholder="z. B. 24,90"
+          placeholder=""
           value={fields.preis !== undefined ? fields.preis : (computedValues['preis'] ?? '')}
           onChange={e => setFields(f => ({ ...f, preis: clampNumberValue(formEnhancements, 'preis', e.target.value) }))}
         />
@@ -337,9 +337,20 @@ export function ErsatzteileDialog({ open, onClose, onSubmit, defaultValues, reco
           inputMode="decimal"
           step="any"
           {...numberInputProps(formEnhancements, 'lagerbestand')}
-          placeholder="z. B. 15"
+          placeholder=""
           value={fields.lagerbestand !== undefined ? fields.lagerbestand : (computedValues['lagerbestand'] ?? '')}
           onChange={e => setFields(f => ({ ...f, lagerbestand: clampNumberValue(formEnhancements, 'lagerbestand', e.target.value) }))}
+        />
+      </div>
+    ),
+    'lieferant': (
+      <div key="lieferant" className="space-y-1.5">
+        <Label htmlFor="lieferant">{fieldLabel('ersatzteile', 'lieferant')}</Label>
+        <Input
+          id="lieferant"
+          placeholder=""
+          value={fields.lieferant ?? ''}
+          onChange={e => setFields(f => ({ ...f, lieferant: e.target.value }))}
         />
       </div>
     ),
@@ -357,7 +368,7 @@ export function ErsatzteileDialog({ open, onClose, onSubmit, defaultValues, reco
   //     kein passendes Backend-Feld in orderedFields) erscheinen NICHT als
   //     Input, sondern unten als kompakte 'Berechnungen'-Übersicht oder als
   //     Inline-Hint unter dem letzten beitragenden Input.
-  const FIELD_LABELS: Record<string, string> = {"bezeichnung": "Bezeichnung", "artikelnummer": "Artikelnummer", "preis": "Preis in Euro", "lagerbestand": "Lagerbestand"};
+  const FIELD_LABELS: Record<string, string> = {"bezeichnung": "Bezeichnung", "artikelnummer": "Artikelnummer", "preis": "Preis in Euro", "lagerbestand": "Lagerbestand", "lieferant": "Lieferant"};
   const CURRENCY_KEYS = new Set<string>(["preis"]);
   // Applookup-Referenz-Labels: pro applookup-Feld in dieser Form (ownKey)
   // eine Map { lookupKey: label } für ALLE Felder des Target-Schemas. Wird

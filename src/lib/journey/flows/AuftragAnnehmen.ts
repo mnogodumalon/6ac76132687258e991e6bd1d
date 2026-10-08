@@ -1,9 +1,9 @@
 /**
  * useAuftragAnnehmenFlow — the plumbing of the flow « Reparaturauftrag annehmen », generated from the plan.
  *
- * Writes `kunden` (only when the person fills it): asks `kunde_vorname`, `kunde_nachname`, `email`, `telefon`.
-Writes `fahrraeder` (only when the person fills it): asks `besitzer`, `marke`, `modell`, `fahrradtyp`, `rahmengroesse`, `rahmennummer`, `kaufdatum`; links `besitzer` ← the created `kunden`.
-Writes `reparaturauftraege`: asks `kunde`, `fahrrad`, `problembeschreibung`, `prioritaet`, `wunschtermin`; sets `status` itself; links `kunde` ← the created `kunden`, `fahrrad` ← the created `fahrraeder`.
+ * Writes `kunden` (only when the person fills it): asks `email`, `telefon`, `kunde_vorname`, `kunde_nachname`.
+Writes `fahrraeder` (only when the person fills it): asks `marke`, `modell`, `besitzer`, `kaufdatum`, `fahrradtyp`, `rahmennummer`, `rahmengroesse`; links `besitzer` ← the created `kunden`.
+Writes `reparaturauftraege`: asks `kunde`, `fahrrad`, `prioritaet`, `wunschtermin`, `problembeschreibung`; sets `status` itself; links `kunde` ← the created `kunden`, `fahrrad` ← the created `fahrraeder`.
  * The hook OWNS: the form(s) with exactly these fields and the plan's required
  * ingredients, one record search per picked field (columns and filter from
  * the plan), and the submit plan with its fixed and derived values. A page
@@ -18,26 +18,26 @@ Writes `reparaturauftraege`: asks `kunde`, `fahrrad`, `problembeschreibung`, `pr
  *   messages  the sentence for an empty required field, per field
  *
  *   const flow = useAuftragAnnehmenFlow({
- *     steps: { besitzer: 1, kunde: 2, fahrrad: 3, kunde_vorname: 4, kunde_nachname: 4, email: 4, telefon: 4, marke: 4, modell: 4, fahrradtyp: 4, rahmengroesse: 4, rahmennummer: 4, kaufdatum: 4, problembeschreibung: 4, prioritaet: 4, wunschtermin: 4 },
+ *     steps: { besitzer: 1, kunde: 2, fahrrad: 3, email: 4, telefon: 4, kunde_vorname: 4, kunde_nachname: 4, marke: 4, modell: 4, kaufdatum: 4, fahrradtyp: 4, rahmennummer: 4, rahmengroesse: 4, prioritaet: 4, wunschtermin: 4, problembeschreibung: 4 },
  *     items: { besitzer: r => ({ id: r.id, title: fieldText(r, 'kunde_vorname') }) },
  *   });
  *   <IntentWizardShell forms={flow.forms} draftKey={flow.draftKey} …>
  *     <EntitySelectStep {...flow.picks.besitzer.select} {...flow.pick('besitzer')} />
  *     <EntitySelectStep {...flow.picks.kunde.select} {...flow.pick('kunde')} />
  *     <EntitySelectStep {...flow.picks.fahrrad.select} {...flow.pick('fahrrad')} />
- *     <Bound form={flow.forms.kunden} name="kunde_vorname" />
- *     <Bound form={flow.forms.kunden} name="kunde_nachname" />
  *     <Bound form={flow.forms.kunden} name="email" />
  *     <Bound form={flow.forms.kunden} name="telefon" />
+ *     <Bound form={flow.forms.kunden} name="kunde_vorname" />
+ *     <Bound form={flow.forms.kunden} name="kunde_nachname" />
  *     <Bound form={flow.forms.fahrraeder} name="marke" />
  *     <Bound form={flow.forms.fahrraeder} name="modell" />
- *     <Bound form={flow.forms.fahrraeder} name="fahrradtyp" />
- *     <Bound form={flow.forms.fahrraeder} name="rahmengroesse" />
- *     <Bound form={flow.forms.fahrraeder} name="rahmennummer" />
  *     <Bound form={flow.forms.fahrraeder} name="kaufdatum" />
- *     <Bound form={flow.forms.reparaturauftraege} name="problembeschreibung" />
+ *     <Bound form={flow.forms.fahrraeder} name="fahrradtyp" />
+ *     <Bound form={flow.forms.fahrraeder} name="rahmennummer" />
+ *     <Bound form={flow.forms.fahrraeder} name="rahmengroesse" />
  *     <Bound form={flow.forms.reparaturauftraege} name="prioritaet" />
  *     <Bound form={flow.forms.reparaturauftraege} name="wunschtermin" />
+ *     <Bound form={flow.forms.reparaturauftraege} name="problembeschreibung" />
  *     <StepNav onNext={() => flow.validateStep(n)} />
  *     {!flow.submit.done && <SummaryStep forms={flow.formList} submit={flow.submit} />}
  *     {flow.submit.result && <SuccessStep result={flow.submit.result} forms={flow.formList} submit={flow.submit} />}
@@ -107,24 +107,24 @@ function hasValues(form: StepForm): boolean {
 export function useAuftragAnnehmenFlow(options: AuftragAnnehmenFlowOptions = {}) {
   const steps = { ...DEFAULT_STEPS, ...(options.steps ?? {}) } as Record<string, number>;
   const kunden = useStepForm('kunden', {
-    fields: ["kunde_vorname", "kunde_nachname", "email", "telefon"],
-    steps: only(steps, ["kunde_vorname", "kunde_nachname", "email", "telefon"]) as Record<string, number>,
-    initial: only(options.initial as FormValues | undefined, ["kunde_vorname", "kunde_nachname", "email", "telefon"]),
-    messages: only(options.messages as Record<string, string> | undefined, ["kunde_vorname", "kunde_nachname", "email", "telefon"]),
+    fields: ["email", "telefon", "kunde_vorname", "kunde_nachname"],
+    steps: only(steps, ["email", "telefon", "kunde_vorname", "kunde_nachname"]) as Record<string, number>,
+    initial: only(options.initial as FormValues | undefined, ["email", "telefon", "kunde_vorname", "kunde_nachname"]),
+    messages: only(options.messages as Record<string, string> | undefined, ["email", "telefon", "kunde_vorname", "kunde_nachname"]),
   });
   const fahrraeder = useStepForm('fahrraeder', {
-    fields: ["besitzer", "marke", "modell", "fahrradtyp", "rahmengroesse", "rahmennummer", "kaufdatum"],
-    steps: only(steps, ["besitzer", "marke", "modell", "fahrradtyp", "rahmengroesse", "rahmennummer", "kaufdatum"]) as Record<string, number>,
-    initial: only(options.initial as FormValues | undefined, ["besitzer", "marke", "modell", "fahrradtyp", "rahmengroesse", "rahmennummer", "kaufdatum"]),
-    messages: only(options.messages as Record<string, string> | undefined, ["besitzer", "marke", "modell", "fahrradtyp", "rahmengroesse", "rahmennummer", "kaufdatum"]),
+    fields: ["marke", "modell", "besitzer", "kaufdatum", "fahrradtyp", "rahmennummer", "rahmengroesse"],
+    steps: only(steps, ["marke", "modell", "besitzer", "kaufdatum", "fahrradtyp", "rahmennummer", "rahmengroesse"]) as Record<string, number>,
+    initial: only(options.initial as FormValues | undefined, ["marke", "modell", "besitzer", "kaufdatum", "fahrradtyp", "rahmennummer", "rahmengroesse"]),
+    messages: only(options.messages as Record<string, string> | undefined, ["marke", "modell", "besitzer", "kaufdatum", "fahrradtyp", "rahmennummer", "rahmengroesse"]),
   });
   const reparaturauftraege = useStepForm('reparaturauftraege', {
-    fields: ["kunde", "fahrrad", "problembeschreibung", "prioritaet", "wunschtermin"],
-    steps: only(steps, ["kunde", "fahrrad", "problembeschreibung", "prioritaet", "wunschtermin"]) as Record<string, number>,
+    fields: ["kunde", "fahrrad", "prioritaet", "wunschtermin", "problembeschreibung"],
+    steps: only(steps, ["kunde", "fahrrad", "prioritaet", "wunschtermin", "problembeschreibung"]) as Record<string, number>,
     // the plan builds a value from these — required here, whatever the app's base view says
     required: { wunschtermin: true },
-    initial: only(options.initial as FormValues | undefined, ["kunde", "fahrrad", "problembeschreibung", "prioritaet", "wunschtermin"]),
-    messages: only(options.messages as Record<string, string> | undefined, ["kunde", "fahrrad", "problembeschreibung", "prioritaet", "wunschtermin"]),
+    initial: only(options.initial as FormValues | undefined, ["kunde", "fahrrad", "prioritaet", "wunschtermin", "problembeschreibung"]),
+    messages: only(options.messages as Record<string, string> | undefined, ["kunde", "fahrrad", "prioritaet", "wunschtermin", "problembeschreibung"]),
   });
   const forms: AuftragAnnehmenForms = { kunden, fahrraeder, reparaturauftraege };
   const formList: StepForm[] = [kunden, fahrraeder, reparaturauftraege];

@@ -37,6 +37,7 @@ export function ErsatzteileDetails({
         <RecordField label={fieldLabel('ersatzteile', 'artikelnummer')} value={record.fields.artikelnummer} format="text" />
         <RecordField label={fieldLabel('ersatzteile', 'preis')} value={record.fields.preis} format="text" />
         <RecordField label={fieldLabel('ersatzteile', 'lagerbestand')} value={record.fields.lagerbestand} format="text" />
+        <RecordField label={fieldLabel('ersatzteile', 'lieferant')} value={record.fields.lieferant} format="text" />
       </RecordSection>
 
       <SatelliteSection

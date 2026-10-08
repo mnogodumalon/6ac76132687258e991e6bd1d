@@ -1,7 +1,7 @@
 /**
  * useKostenvoranschlagErstellenFlow — the plumbing of the flow « Kostenvoranschlag erstellen », generated from the plan.
  *
- * Writes `kostenvoranschlaege`: asks `reparaturauftrag`, `positionen`, `ersatzteile`, `bemerkung`; sets `datum`, `freigabe_status` itself.
+ * Writes `kostenvoranschlaege`: asks `bemerkung`, `positionen`, `ersatzteile`, `reparaturauftrag`; sets `datum`, `freigabe_status` itself.
 Changes `reparaturauftraege`: the record to change is picked (`flow.pick('reparaturauftraege')`), the form is prefilled with its values; ; sets `status` itself.
  * The hook OWNS: the form(s) with exactly these fields and the plan's required
  * ingredients, one record search per picked field (columns and filter from
@@ -18,16 +18,16 @@ Changes `reparaturauftraege`: the record to change is picked (`flow.pick('repara
  *   compute   REQUIRED — the plan says these values are computed in the flow
  *             but leaves the rule to you: `gesamtbetrag` (derived:computed:Summe der Preise der gewählten Ersatzteile) *
  *   const flow = useKostenvoranschlagErstellenFlow({
- *     steps: { reparaturauftraege: 1, reparaturauftrag: 2, ersatzteile: 3, positionen: 4, bemerkung: 4 },
- *     items: { reparaturauftrag: r => ({ id: r.id, title: fieldText(r, 'problembeschreibung') }) },
+ *     steps: { reparaturauftraege: 1, ersatzteile: 2, reparaturauftrag: 3, bemerkung: 4, positionen: 4 },
+ *     items: { ersatzteile: r => ({ id: r.id, title: fieldText(r, 'bezeichnung') }) },
  *     compute: { gesamtbetrag: forms => null },
  *   });
  *   <IntentWizardShell forms={flow.forms} draftKey={flow.draftKey} …>
- *     <EntitySelectStep {...flow.picks.reparaturauftrag.select} {...flow.pick('reparaturauftrag')} />
  *     <EntitySelectStep {...flow.picks.ersatzteile.select} {...flow.pickMany('ersatzteile')} />
+ *     <EntitySelectStep {...flow.picks.reparaturauftrag.select} {...flow.pick('reparaturauftrag')} />
  *     // the record this flow changes: <EntitySelectStep {...flow.picks.reparaturauftraege.select} {...flow.pick('reparaturauftraege')} />
- *     <Bound form={flow.forms.kostenvoranschlaege} name="positionen" />
  *     <Bound form={flow.forms.kostenvoranschlaege} name="bemerkung" />
+ *     <Bound form={flow.forms.kostenvoranschlaege} name="positionen" />
  *     <StepNav onNext={() => flow.validateStep(n)} />
  *     {!flow.submit.done && <SummaryStep forms={flow.formList} submit={flow.submit} />}
  *     {flow.submit.result && <SuccessStep result={flow.submit.result} forms={flow.formList} submit={flow.submit} />}
@@ -60,8 +60,8 @@ export interface KostenvoranschlagErstellenFlowOptions {
   messages?: Partial<Record<Key, string>>;
   /** How a search hit reads — the card's title/subtitle/status per pick. */
   items?: {
-    reparaturauftrag?: (record: JourneyRecord, ctx: RefContext) => SelectItemLike;
     ersatzteile?: (record: JourneyRecord, ctx: RefContext) => SelectItemLike;
+    reparaturauftrag?: (record: JourneyRecord, ctx: RefContext) => SelectItemLike;
     reparaturauftraege?: (record: JourneyRecord, ctx: RefContext) => SelectItemLike;
   };
   /** The plan computes these in the flow but leaves the rule to the page. */
@@ -70,7 +70,7 @@ export interface KostenvoranschlagErstellenFlowOptions {
   };
 }
 
-const DEFAULT_STEPS: Record<string, number> = {"bemerkung": 4, "ersatzteile": 3, "positionen": 4, "reparaturauftraege": 1, "reparaturauftrag": 2};
+const DEFAULT_STEPS: Record<string, number> = {"bemerkung": 4, "ersatzteile": 2, "positionen": 4, "reparaturauftraege": 1, "reparaturauftrag": 3};
 export const KOSTENVORANSCHLAGERSTELLEN_REVIEW_STEP = 5;
 
 function fromPick<T>(pick: { recordOf(id: string): JourneyRecord | undefined }, form: StepForm, field: string, read: (r: JourneyRecord) => T): T | undefined {
@@ -103,12 +103,12 @@ export function useKostenvoranschlagErstellenFlow(options: KostenvoranschlagErst
   const steps = { ...DEFAULT_STEPS, ...(options.steps ?? {}) } as Record<string, number>;
   const [reparaturauftraegeTargetId, setReparaturauftraegeTargetId] = useState<string | null>(null);
   const kostenvoranschlaege = useStepForm('kostenvoranschlaege', {
-    fields: ["reparaturauftrag", "positionen", "ersatzteile", "bemerkung"],
-    steps: only(steps, ["reparaturauftrag", "positionen", "ersatzteile", "bemerkung"]) as Record<string, number>,
+    fields: ["bemerkung", "positionen", "ersatzteile", "reparaturauftrag"],
+    steps: only(steps, ["bemerkung", "positionen", "ersatzteile", "reparaturauftrag"]) as Record<string, number>,
     // the plan builds a value from these — required here, whatever the app's base view says
     required: { ersatzteile: true },
-    initial: only(options.initial as FormValues | undefined, ["reparaturauftrag", "positionen", "ersatzteile", "bemerkung"]),
-    messages: only(options.messages as Record<string, string> | undefined, ["reparaturauftrag", "positionen", "ersatzteile", "bemerkung"]),
+    initial: only(options.initial as FormValues | undefined, ["bemerkung", "positionen", "ersatzteile", "reparaturauftrag"]),
+    messages: only(options.messages as Record<string, string> | undefined, ["bemerkung", "positionen", "ersatzteile", "reparaturauftrag"]),
   });
   const reparaturauftraege = useStepForm('reparaturauftraege', {
     fields: [],
@@ -124,15 +124,15 @@ export function useKostenvoranschlagErstellenFlow(options: KostenvoranschlagErst
   // render time, so a change works on the running application.
   usePolicyVersion();
   const searches = {
+    ersatzteile: useRecordSearch(servicePort, 'ersatzteile', withPickPolicy('ersatzteile', {
+      searchFields: ["bezeichnung", "artikelnummer"] as never,
+      toItem: options.items?.ersatzteile as never,
+    })),
     reparaturauftrag: useRecordSearch(servicePort, 'reparaturauftraege', withPickPolicy('reparaturauftrag', {
       searchFields: ["problembeschreibung"] as never,
       filter: "r.v_status in ['bestaetigt', 'in_bearbeitung']",
       where: (r: JourneyRecord) => ["bestaetigt", "in_bearbeitung"].includes(fieldLookup(r, "status")?.key ?? ''),
       toItem: options.items?.reparaturauftrag as never,
-    })),
-    ersatzteile: useRecordSearch(servicePort, 'ersatzteile', withPickPolicy('ersatzteile', {
-      searchFields: ["bezeichnung", "artikelnummer"] as never,
-      toItem: options.items?.ersatzteile as never,
     })),
     reparaturauftraege: useRecordSearch(servicePort, 'reparaturauftraege', withPickPolicy('reparaturauftraege', {
       searchFields: ["problembeschreibung"] as never,
@@ -156,8 +156,8 @@ export function useKostenvoranschlagErstellenFlow(options: KostenvoranschlagErst
     href: `#/verwaltung/anwendung?line=intent:kostenvoranschlag-erstellen:write:${entity}.${field}`,
   });
   const picks = {
-    reparaturauftrag: { ...searches.reparaturauftrag, select: { ...searches.reparaturauftrag.select, create: false as boolean, hint: hintFor('reparaturauftrag', 'reparaturauftraege', {"conditions": [{"field": "status", "op": "in", "value": ["bestaetigt", "in_bearbeitung"]}], "mode": "all"} as PickWhere | null) } },
     ersatzteile: { ...searches.ersatzteile, select: { ...searches.ersatzteile.select, create: false as boolean, hint: hintFor('ersatzteile', 'ersatzteile', null as PickWhere | null) } },
+    reparaturauftrag: { ...searches.reparaturauftrag, select: { ...searches.reparaturauftrag.select, create: false as boolean, hint: hintFor('reparaturauftrag', 'reparaturauftraege', {"conditions": [{"field": "status", "op": "in", "value": ["bestaetigt", "in_bearbeitung"]}], "mode": "all"} as PickWhere | null) } },
     reparaturauftraege: { ...searches.reparaturauftraege, select: { ...searches.reparaturauftraege.select, create: false as boolean, hint: hintFor('reparaturauftraege', 'reparaturauftraege', {"conditions": [{"field": "status", "op": "in", "value": ["bestaetigt", "in_bearbeitung"]}], "mode": "all"} as PickWhere | null) } },
   };
 

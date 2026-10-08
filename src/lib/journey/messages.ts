@@ -30,7 +30,7 @@ export interface MessageFields {
   "kunden": "kunde_vorname" | "kunde_nachname" | "email" | "telefon" | "strasse" | "hausnummer" | "plz" | "ort" | "bemerkung";
   "fahrraeder": "besitzer" | "marke" | "modell" | "fahrradtyp" | "rahmengroesse" | "rahmennummer" | "farbe" | "kaufdatum";
   "reparaturauftraege": "kunde" | "fahrrad" | "problembeschreibung" | "wunschtermin" | "uebergabetermin" | "prioritaet" | "status";
-  "ersatzteile": "bezeichnung" | "artikelnummer" | "preis" | "lagerbestand";
+  "ersatzteile": "bezeichnung" | "artikelnummer" | "preis" | "lagerbestand" | "lieferant";
   "kostenvoranschlaege": "reparaturauftrag" | "datum" | "positionen" | "ersatzteile" | "gesamtbetrag" | "freigabe_status" | "bemerkung";
 }
 export type MessageFieldKey<E extends EntityKey> = E extends keyof MessageFields ? MessageFields[E] : never;

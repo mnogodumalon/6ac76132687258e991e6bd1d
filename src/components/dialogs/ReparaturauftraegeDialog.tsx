@@ -305,7 +305,7 @@ export function ReparaturauftraegeDialog({ open, onClose, onSubmit, defaultValue
         }
       }
       const photoContext = contextParts.length ? contextParts.join('\n') : undefined;
-      const schema = `{\n  "kunde": string | null, // Display name from Kunden (see <available-records>)\n  "fahrrad": string | null, // Display name from Fahrräder (see <available-records>)\n  "problembeschreibung": string | null, // Problembeschreibung\n  "wunschtermin": string | null, // YYYY-MM-DDTHH:MM\n  "uebergabetermin": string | null, // YYYY-MM-DD\n  "prioritaet": LookupValue | null, // Priorität (select one key: "niedrig" | "normal" | "hoch" | "dringend") mapping: niedrig=Niedrig, normal=Normal, hoch=Hoch, dringend=Dringend\n  "status": LookupValue | null, // Status (select one key: "angemeldet" | "bestaetigt" | "in_bearbeitung" | "wartet_auf_freigabe" | "fertig" | "uebergeben" | "storniert") mapping: angemeldet=Angemeldet, bestaetigt=Bestätigt, in_bearbeitung=In Bearbeitung, wartet_auf_freigabe=Wartet auf Freigabe, fertig=Fertig, uebergeben=Übergeben, storniert=Storniert\n}`;
+      const schema = `{\n  "kunde": string | null, // Display name from Kunden (see <available-records>)\n  "fahrrad": string | null, // Display name from Fahrräder (see <available-records>)\n  "problembeschreibung": string | null, // Problembeschreibung\n  "wunschtermin": string | null, // YYYY-MM-DD\n  "uebergabetermin": string | null, // YYYY-MM-DD\n  "prioritaet": LookupValue | null, // Priorität (select one key: "normal" | "hoch" | "niedrig" | "dringend") mapping: normal=Normal, hoch=Hoch, niedrig=Niedrig, dringend=Dringend\n  "status": LookupValue | null, // Status (select one key: "angemeldet" | "bestaetigt" | "in_bearbeitung" | "wartet_auf_freigabe" | "fertig" | "uebergeben" | "storniert") mapping: angemeldet=Angemeldet, bestaetigt=Bestätigt, in_bearbeitung=In Bearbeitung, wartet_auf_freigabe=Wartet auf Freigabe, fertig=Fertig, uebergeben=Übergeben, storniert=Storniert\n}`;
       const raw = await extractFromInput<Record<string, unknown>>(schema, {
         dataUri: uri,
         userText: aiText.trim() || undefined,
@@ -384,7 +384,7 @@ export function ReparaturauftraegeDialog({ open, onClose, onSubmit, defaultValue
         <Label htmlFor="kunde">{fieldLabel('reparaturauftraege', 'kunde')} <span className="text-destructive" aria-hidden="true">*</span></Label>
         <Combobox
           id="kunde"
-          placeholder="Welcher Kunde?"
+          placeholder=""
           items={kundenListAll.map(r => ({
             id: r.record_id,
             label: String(r.fields.kunde_vorname ?? r.record_id),
@@ -404,7 +404,7 @@ export function ReparaturauftraegeDialog({ open, onClose, onSubmit, defaultValue
         <Label htmlFor="fahrrad">{fieldLabel('reparaturauftraege', 'fahrrad')} <span className="text-destructive" aria-hidden="true">*</span></Label>
         <Combobox
           id="fahrrad"
-          placeholder="Welches Fahrrad?"
+          placeholder=""
           items={fahrraederListAll.map(r => ({
             id: r.record_id,
             label: String(r.fields.marke ?? r.record_id),
@@ -424,7 +424,7 @@ export function ReparaturauftraegeDialog({ open, onClose, onSubmit, defaultValue
         <Label htmlFor="problembeschreibung">{fieldLabel('reparaturauftraege', 'problembeschreibung')} <span className="text-destructive" aria-hidden="true">*</span></Label>
         <Textarea
           id="problembeschreibung"
-          placeholder="Was ist defekt?"
+          placeholder=""
           value={fields.problembeschreibung ?? ''}
           onChange={e => setFields(f => ({ ...f, problembeschreibung: e.target.value }))}
           rows={3}
@@ -439,8 +439,8 @@ export function ReparaturauftraegeDialog({ open, onClose, onSubmit, defaultValue
         <Label htmlFor="wunschtermin">{fieldLabel('reparaturauftraege', 'wunschtermin')}</Label>
         <DatePicker
           id="wunschtermin"
-          placeholder="Wann soll die Reparatur starten?"
-          mode="datetime"
+          placeholder=""
+          mode="date"
           value={fields.wunschtermin ?? null}
           onChange={v => setFields(f => ({ ...f, wunschtermin: v ?? undefined }))}
         />
@@ -451,7 +451,7 @@ export function ReparaturauftraegeDialog({ open, onClose, onSubmit, defaultValue
         <Label htmlFor="uebergabetermin">{fieldLabel('reparaturauftraege', 'uebergabetermin')}</Label>
         <DatePicker
           id="uebergabetermin"
-          placeholder="Wann wird das Fahrrad übergeben?"
+          placeholder=""
           mode="date"
           value={fields.uebergabetermin ?? null}
           onChange={v => setFields(f => ({ ...f, uebergabetermin: v ?? undefined }))}
@@ -462,19 +462,6 @@ export function ReparaturauftraegeDialog({ open, onClose, onSubmit, defaultValue
       <div key="prioritaet" className="space-y-1.5">
         <Label htmlFor="prioritaet">{fieldLabel('reparaturauftraege', 'prioritaet')}</Label>
         <div role="radiogroup" className="flex flex-wrap gap-1.5">
-          <button
-            type="button"
-            role="radio"
-            aria-checked={lookupKey(fields.prioritaet) === 'niedrig'}
-            onClick={() => setFields(f => ({ ...f, prioritaet: (lookupKey(f.prioritaet) === 'niedrig' ? undefined : 'niedrig') as any }))}
-            className={`inline-flex items-center justify-center min-h-9 max-sm:min-h-11 max-sm:px-4 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
-              lookupKey(fields.prioritaet) === 'niedrig'
-                ? 'bg-foreground text-background border-foreground'
-                : 'bg-background text-foreground border-input hover:bg-accent'
-            }`}
-          >
-            {lookupLabel('reparaturauftraege', 'prioritaet', 'niedrig') ?? 'Niedrig'}
-          </button>
           <button
             type="button"
             role="radio"
@@ -504,6 +491,19 @@ export function ReparaturauftraegeDialog({ open, onClose, onSubmit, defaultValue
           <button
             type="button"
             role="radio"
+            aria-checked={lookupKey(fields.prioritaet) === 'niedrig'}
+            onClick={() => setFields(f => ({ ...f, prioritaet: (lookupKey(f.prioritaet) === 'niedrig' ? undefined : 'niedrig') as any }))}
+            className={`inline-flex items-center justify-center min-h-9 max-sm:min-h-11 max-sm:px-4 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+              lookupKey(fields.prioritaet) === 'niedrig'
+                ? 'bg-foreground text-background border-foreground'
+                : 'bg-background text-foreground border-input hover:bg-accent'
+            }`}
+          >
+            {lookupLabel('reparaturauftraege', 'prioritaet', 'niedrig') ?? 'Niedrig'}
+          </button>
+          <button
+            type="button"
+            role="radio"
             aria-checked={lookupKey(fields.prioritaet) === 'dringend'}
             onClick={() => setFields(f => ({ ...f, prioritaet: (lookupKey(f.prioritaet) === 'dringend' ? undefined : 'dringend') as any }))}
             className={`inline-flex items-center justify-center min-h-9 max-sm:min-h-11 max-sm:px-4 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
@@ -524,7 +524,7 @@ export function ReparaturauftraegeDialog({ open, onClose, onSubmit, defaultValue
           value={lookupKey(fields.status) ?? ''}
           onValueChange={v => setFields(f => ({ ...f, status: v === 'none' ? undefined : v as any }))}
         >
-          <SelectTrigger id="status" className="max-sm:h-11"><SelectValue placeholder="z. B. Angemeldet, Bestätigt" /></SelectTrigger>
+          <SelectTrigger id="status" className="max-sm:h-11"><SelectValue placeholder="" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="none">—</SelectItem>
             <SelectItem value="angemeldet">{lookupLabel('reparaturauftraege', 'status', 'angemeldet') ?? 'Angemeldet'}</SelectItem>

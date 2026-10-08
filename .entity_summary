@@ -54,25 +54,24 @@ createRecordUrl from the service. Note the lowercase `l` in the service path.
 - Kunden (kunden): kunde_vorname!^[string/text] "Vorname", kunde_nachname!^[string/text] "Nachname", email!^[string/email] "E-Mail", telefon^[string/tel], strasse^[string/text], hausnummer[string/text], plz[string/text] "Postleitzahl", ort[string/text], bemerkung[string/textarea]
   ≡ 3 records at build time
   ⚙ getKunden() · getKundenEntry(id) · createKundenEntry(fields) · updateKundenEntry(id, fields) · deleteKundenEntry(id) · queryKunden({ filter, orderby, limit, offset, fields }) · countKunden(filter?)
-- Fahrräder (fahrraeder): besitzer!^[applookup/select], marke!^[string/text], modell^[string/text], fahrradtyp^[lookup/select: trekkingrad|mountainbike|rennrad|ebike=E-Bike|kinderrad|lastenrad|sonstiges|citybike], rahmengroesse^[string/text], rahmennummer[string/text], farbe[string/text], kaufdatum[date/date]
+- Fahrräder (fahrraeder): besitzer![applookup/select], marke!^[string/text], modell^[string/text], fahrradtyp[lookup/select: citybike|trekkingrad|mountainbike|rennrad|ebike=E-Bike|kinderrad|lastenrad|sonstiges], rahmengroesse^[string/text], rahmennummer[string/text], farbe[string/text], kaufdatum[date/date]
   ≡ 3 records at build time
   ◈ besitzer → record (kunden, EntitySelectStep)
   ⚙ getFahrraeder() · getFahrraederEntry(id) · createFahrraederEntry(fields) · updateFahrraederEntry(id, fields) · deleteFahrraederEntry(id) · queryFahrraeder({ filter, orderby, limit, offset, fields }) · countFahrraeder(filter?)
   ✚ EnrichedFahrraeder adds ONLY besitzerName — via enrichFahrraeder(fahrraeder, { kundenMap }), all maps required
   → besitzer links to app_id 6ac7610c7aadf5593f5a2d43
-- Reparaturaufträge (reparaturauftraege): kunde!^[applookup/select], fahrrad!^[applookup/select], problembeschreibung!^[string/textarea], wunschtermin^[date/datetimeminute] "Wunschtermin für die Anmeldung", uebergabetermin^[date/date] "Termin für die Übergabe", prioritaet[lookup/radio: niedrig|normal|hoch|dringend], status![lookup/select: angemeldet|bestaetigt|in_bearbeitung|wartet_auf_freigabe|fertig|uebergeben|storniert]
+- Reparaturaufträge (reparaturauftraege): kunde!^[applookup/select], fahrrad!^[applookup/select], problembeschreibung!^[string/textarea], wunschtermin^[date/date] "Wunschtermin für die Anmeldung", uebergabetermin^[date/date] "Termin für die Übergabe", prioritaet[lookup/radio: normal|hoch|niedrig|dringend], status![lookup/select: angemeldet|bestaetigt|in_bearbeitung|wartet_auf_freigabe|fertig|uebergeben|storniert]
   ≡ 3 records at build time
-  · wunschtermin: A specific moment in time consisting of year, month, day, hour and minute (or `null`/`None`) The field value will be a string in the format `<YYYY>-<MM>-<DD>T<HH>:<MM>` (or `null`/`None`). For example: `2000-02-29T11:30`. For `POST`/`PUT`/`PATCH` requests the REST API uses a liberal parsing approach so that strings like `2026`, `February 29, 2000 12:34 MEST`, `letztes Jahr` etc. will be accepted as value datetime values. However this runs the risk of parsing ambiguous values incorrectly. To ensure reliable parsing it is best to use the canonical format specified above.
   ◈ prioritaet → choice (4 options, ChoiceGroup) · kunde → record (kunden, EntitySelectStep) · fahrrad → record (fahrraeder, EntitySelectStep)
   ⚙ getReparaturauftraege() · getReparaturauftraegeEntry(id) · createReparaturauftraegeEntry(fields) · updateReparaturauftraegeEntry(id, fields) · deleteReparaturauftraegeEntry(id) · queryReparaturauftraege({ filter, orderby, limit, offset, fields }) · countReparaturauftraege(filter?)
   ✚ EnrichedReparaturauftraege adds ONLY kundeName, fahrradName — via enrichReparaturauftraege(reparaturauftraege, { kundenMap, fahrraederMap }), all maps required
   → kunde links to app_id 6ac7610c7aadf5593f5a2d43
   → fahrrad links to app_id 6ac761117b30cfa3a3a0c897
-- Ersatzteile (ersatzteile): bezeichnung!^[string/text], artikelnummer^[string/text], preis!^[number] "Preis in Euro", lagerbestand^[number]
+- Ersatzteile (ersatzteile): bezeichnung!^[string/text], artikelnummer^[string/text], preis![number] "Preis in Euro", lagerbestand[number], lieferant[string/text]
   ≡ 3 records at build time
   ◈ lagerbestand → stock (show it, warn on overshoot)
   ⚙ getErsatzteile() · getErsatzteileEntry(id) · createErsatzteileEntry(fields) · updateErsatzteileEntry(id, fields) · deleteErsatzteileEntry(id) · queryErsatzteile({ filter, orderby, limit, offset, fields }) · countErsatzteile(filter?)
-- Kostenvoranschläge (kostenvoranschlaege): reparaturauftrag!^[applookup/select], datum!^[date/date], positionen^[string/textarea] "Beschreibung der Positionen", ersatzteile^[multipleapplookup/select] "Verwendete Ersatzteile", gesamtbetrag!^[number] "Gesamtbetrag in Euro", freigabe_status![lookup/radio: freigegeben|abgelehnt|offen] "Status der Freigabe", bemerkung[string/textarea]
+- Kostenvoranschläge (kostenvoranschlaege): reparaturauftrag!^[applookup/select], datum!^[date/date], positionen^[string/textarea] "Beschreibung der Positionen", ersatzteile^[multipleapplookup/select] "Verwendete Ersatzteile", gesamtbetrag!^[number] "Gesamtbetrag in Euro", freigabe_status![lookup/radio: offen|freigegeben|abgelehnt] "Status der Freigabe", bemerkung[string/textarea]
   ≡ 3 records at build time
   ◈ freigabe_status → choice (3 options, ChoiceGroup) · reparaturauftrag → record (reparaturauftraege, EntitySelectStep) · ersatzteile → record (ersatzteile, EntitySelectStep)
   ⚙ getKostenvoranschlaege() · getKostenvoranschlaegeEntry(id) · createKostenvoranschlaegeEntry(fields) · updateKostenvoranschlaegeEntry(id, fields) · deleteKostenvoranschlaegeEntry(id) · queryKostenvoranschlaege({ filter, orderby, limit, offset, fields }) · countKostenvoranschlaege(filter?)

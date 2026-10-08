@@ -4,8 +4,8 @@ import { extractRecordId } from '@/services/livingAppsService';
 import {
   RecordSection, RecordField, RecordRelation, RecordAttachments,
 } from '@/components/widgets/RecordView';
-import { usePermissions } from '@/lib/permissions';
 import { t, appLabel, fieldLabel } from '@/i18n';
+import { usePermissions } from '@/lib/permissions';
 
 export interface KostenvoranschlaegeDetailsProps {
   /** Der Record — enriched oder roh; alle Felder werden hier gerendert. */

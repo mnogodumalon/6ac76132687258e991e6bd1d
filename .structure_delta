@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "changes": [
+    {
+      "kind": "type_changed",
+      "entity": "reparaturauftraege",
+      "field": "wunschtermin",
+      "old_fulltype": "date/datetimeminute",
+      "new_fulltype": "date/date"
+    },
+    {
+      "kind": "field_added",
+      "entity": "ersatzteile",
+      "field": "lieferant",
+      "fulltype": "string/text",
+      "label": "Lieferant"
+    }
+  ],
+  "counts": {
+    "field_added": 1,
+    "type_changed": 1
+  },
+  "harmless_only": false
+}

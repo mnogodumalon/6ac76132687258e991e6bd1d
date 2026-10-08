@@ -21,7 +21,7 @@ export interface StringFields {
   "kunden": "kunde_vorname" | "kunde_nachname" | "email" | "telefon" | "strasse" | "hausnummer" | "plz" | "ort" | "bemerkung";
   "fahrraeder": "marke" | "modell" | "rahmengroesse" | "rahmennummer" | "farbe";
   "reparaturauftraege": "problembeschreibung";
-  "ersatzteile": "bezeichnung" | "artikelnummer";
+  "ersatzteile": "bezeichnung" | "artikelnummer" | "lieferant";
   "kostenvoranschlaege": "positionen" | "bemerkung";
 }
 export type StringFieldKey<E extends EntityKey> = E extends keyof StringFields ? StringFields[E] : never;
@@ -260,14 +260,14 @@ export const FIELD_RULES: Record<EntityKey, Record<string, FieldRule>> = {
       "label": "Fahrradtyp",
       "writable": true,
       "options": [
+        "citybike",
         "trekkingrad",
         "mountainbike",
         "rennrad",
         "ebike",
         "kinderrad",
         "lastenrad",
-        "sonstiges",
-        "citybike"
+        "sonstiges"
       ]
     },
     "rahmengroesse": {
@@ -337,8 +337,8 @@ export const FIELD_RULES: Record<EntityKey, Record<string, FieldRule>> = {
     },
     "wunschtermin": {
       "key": "wunschtermin",
-      "fulltype": "date/datetimeminute",
-      "kind": "datetime",
+      "fulltype": "date/date",
+      "kind": "date",
       "required": false,
       "label": "Wunschtermin für die Anmeldung",
       "writable": true
@@ -359,9 +359,9 @@ export const FIELD_RULES: Record<EntityKey, Record<string, FieldRule>> = {
       "label": "Priorität",
       "writable": true,
       "options": [
-        "niedrig",
         "normal",
         "hoch",
+        "niedrig",
         "dringend"
       ]
     },
@@ -418,6 +418,15 @@ export const FIELD_RULES: Record<EntityKey, Record<string, FieldRule>> = {
       "required": false,
       "label": "Lagerbestand",
       "writable": true
+    },
+    "lieferant": {
+      "key": "lieferant",
+      "fulltype": "string/text",
+      "kind": "text",
+      "required": false,
+      "label": "Lieferant",
+      "writable": true,
+      "maxLength": 4000
     }
   },
   "kostenvoranschlaege": {
@@ -474,9 +483,9 @@ export const FIELD_RULES: Record<EntityKey, Record<string, FieldRule>> = {
       "label": "Status der Freigabe",
       "writable": true,
       "options": [
+        "offen",
         "freigegeben",
-        "abgelehnt",
-        "offen"
+        "abgelehnt"
       ]
     },
     "bemerkung": {

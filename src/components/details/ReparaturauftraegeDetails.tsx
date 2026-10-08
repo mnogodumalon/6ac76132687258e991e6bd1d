@@ -45,7 +45,7 @@ export function ReparaturauftraegeDetails({
     <>
       <RecordSection title={t('details')} cols={2}>
         <RecordField label={fieldLabel('reparaturauftraege', 'problembeschreibung')} value={record.fields.problembeschreibung} format="longtext" className="md:col-span-2" />
-        <RecordField label={fieldLabel('reparaturauftraege', 'wunschtermin')} value={record.fields.wunschtermin} format="datetime" />
+        <RecordField label={fieldLabel('reparaturauftraege', 'wunschtermin')} value={record.fields.wunschtermin} format="date" />
         <RecordField label={fieldLabel('reparaturauftraege', 'uebergabetermin')} value={record.fields.uebergabetermin} format="date" />
         <RecordField label={fieldLabel('reparaturauftraege', 'prioritaet')} value={record.fields.prioritaet} format="pill" />
         <RecordField label={fieldLabel('reparaturauftraege', 'status')} value={record.fields.status} format="pill" />

@@ -1629,14 +1629,14 @@ export const LABELS: Record<CoreLocale, LabelBundle> = {
         },
         "lookups": {
           "fahrradtyp": {
+            "citybike": "Citybike",
             "trekkingrad": "Trekkingrad",
             "mountainbike": "Mountainbike",
             "rennrad": "Rennrad",
             "ebike": "E-Bike",
             "kinderrad": "Kinderrad",
             "lastenrad": "Lastenrad",
-            "sonstiges": "Sonstiges",
-            "citybike": "Citybike"
+            "sonstiges": "Sonstiges"
           }
         }
       },
@@ -1654,9 +1654,9 @@ export const LABELS: Record<CoreLocale, LabelBundle> = {
         },
         "lookups": {
           "prioritaet": {
-            "niedrig": "Niedrig",
             "normal": "Normal",
             "hoch": "Hoch",
+            "niedrig": "Niedrig",
             "dringend": "Dringend"
           },
           "status": {
@@ -1677,7 +1677,8 @@ export const LABELS: Record<CoreLocale, LabelBundle> = {
           "bezeichnung": "Bezeichnung",
           "artikelnummer": "Artikelnummer",
           "preis": "Preis in Euro",
-          "lagerbestand": "Lagerbestand"
+          "lagerbestand": "Lagerbestand",
+          "lieferant": "Lieferant"
         },
         "lookups": {}
       },
@@ -1695,9 +1696,9 @@ export const LABELS: Record<CoreLocale, LabelBundle> = {
         },
         "lookups": {
           "freigabe_status": {
+            "offen": "Offen",
             "freigegeben": "Freigegeben",
-            "abgelehnt": "Abgelehnt",
-            "offen": "Offen"
+            "abgelehnt": "Abgelehnt"
           }
         }
       }
@@ -1718,7 +1719,7 @@ export const LABELS: Record<CoreLocale, LabelBundle> = {
           "hausnummer": "House Number",
           "plz": "Postal Code",
           "ort": "City",
-          "bemerkung": "Remark"
+          "bemerkung": "Remarks"
         },
         "lookups": {}
       },
@@ -1737,14 +1738,14 @@ export const LABELS: Record<CoreLocale, LabelBundle> = {
         },
         "lookups": {
           "fahrradtyp": {
+            "citybike": "City Bike",
             "trekkingrad": "Trekking Bike",
             "mountainbike": "Mountain Bike",
             "rennrad": "Road Bike",
             "ebike": "E-Bike",
             "kinderrad": "Kids' Bike",
             "lastenrad": "Cargo Bike",
-            "sonstiges": "Other",
-            "citybike": "City Bike"
+            "sonstiges": "Other"
           }
         }
       },
@@ -1755,20 +1756,20 @@ export const LABELS: Record<CoreLocale, LabelBundle> = {
           "kunde": "Customer",
           "fahrrad": "Bicycle",
           "problembeschreibung": "Problem Description",
-          "wunschtermin": "Preferred Date for Drop-off",
+          "wunschtermin": "Requested Date for Check-In",
           "uebergabetermin": "Date for Handover",
           "prioritaet": "Priority",
           "status": "Status"
         },
         "lookups": {
           "prioritaet": {
-            "niedrig": "Low",
             "normal": "Normal",
             "hoch": "High",
+            "niedrig": "Low",
             "dringend": "Urgent"
           },
           "status": {
-            "angemeldet": "Registered",
+            "angemeldet": "Checked In",
             "bestaetigt": "Confirmed",
             "in_bearbeitung": "In Progress",
             "wartet_auf_freigabe": "Awaiting Approval",
@@ -1785,7 +1786,8 @@ export const LABELS: Record<CoreLocale, LabelBundle> = {
           "bezeichnung": "Name",
           "artikelnummer": "Article Number",
           "preis": "Price in Euros",
-          "lagerbestand": "Stock Level"
+          "lagerbestand": "Stock Level",
+          "lieferant": "Supplier"
         },
         "lookups": {}
       },
@@ -1799,13 +1801,13 @@ export const LABELS: Record<CoreLocale, LabelBundle> = {
           "ersatzteile": "Spare Parts Used",
           "gesamtbetrag": "Total Amount in Euros",
           "freigabe_status": "Approval Status",
-          "bemerkung": "Remark"
+          "bemerkung": "Remarks"
         },
         "lookups": {
           "freigabe_status": {
+            "offen": "Open",
             "freigegeben": "Approved",
-            "abgelehnt": "Rejected",
-            "offen": "Open"
+            "abgelehnt": "Rejected"
           }
         }
       }

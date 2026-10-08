@@ -280,7 +280,7 @@ export function FahrraederDialog({ open, onClose, onSubmit, defaultValues, recor
         }
       }
       const photoContext = contextParts.length ? contextParts.join('\n') : undefined;
-      const schema = `{\n  "besitzer": string | null, // Display name from Kunden (see <available-records>)\n  "marke": string | null, // Marke\n  "modell": string | null, // Modell\n  "fahrradtyp": LookupValue | null, // Fahrradtyp (select one key: "trekkingrad" | "mountainbike" | "rennrad" | "ebike" | "kinderrad" | "lastenrad" | "sonstiges" | "citybike") mapping: trekkingrad=Trekkingrad, mountainbike=Mountainbike, rennrad=Rennrad, ebike=E-Bike, kinderrad=Kinderrad, lastenrad=Lastenrad, sonstiges=Sonstiges, citybike=Citybike\n  "rahmengroesse": string | null, // Rahmengröße\n  "rahmennummer": string | null, // Rahmennummer\n  "farbe": string | null, // Farbe\n  "kaufdatum": string | null, // YYYY-MM-DD\n}`;
+      const schema = `{\n  "besitzer": string | null, // Display name from Kunden (see <available-records>)\n  "marke": string | null, // Marke\n  "modell": string | null, // Modell\n  "fahrradtyp": LookupValue | null, // Fahrradtyp (select one key: "citybike" | "trekkingrad" | "mountainbike" | "rennrad" | "ebike" | "kinderrad" | "lastenrad" | "sonstiges") mapping: citybike=Citybike, trekkingrad=Trekkingrad, mountainbike=Mountainbike, rennrad=Rennrad, ebike=E-Bike, kinderrad=Kinderrad, lastenrad=Lastenrad, sonstiges=Sonstiges\n  "rahmengroesse": string | null, // Rahmengröße\n  "rahmennummer": string | null, // Rahmennummer\n  "farbe": string | null, // Farbe\n  "kaufdatum": string | null, // YYYY-MM-DD\n}`;
       const raw = await extractFromInput<Record<string, unknown>>(schema, {
         dataUri: uri,
         userText: aiText.trim() || undefined,
@@ -354,7 +354,7 @@ export function FahrraederDialog({ open, onClose, onSubmit, defaultValues, recor
         <Label htmlFor="besitzer">{fieldLabel('fahrraeder', 'besitzer')} <span className="text-destructive" aria-hidden="true">*</span></Label>
         <Combobox
           id="besitzer"
-          placeholder="Wem gehört das Rad?"
+          placeholder=""
           items={kundenListAll.map(r => ({
             id: r.record_id,
             label: String(r.fields.kunde_vorname ?? r.record_id),
@@ -374,7 +374,7 @@ export function FahrraederDialog({ open, onClose, onSubmit, defaultValues, recor
         <Label htmlFor="marke">{fieldLabel('fahrraeder', 'marke')} <span className="text-destructive" aria-hidden="true">*</span></Label>
         <Input
           id="marke"
-          placeholder="z. B. Cube"
+          placeholder=""
           value={fields.marke ?? ''}
           onChange={e => setFields(f => ({ ...f, marke: e.target.value }))}
           required
@@ -389,7 +389,7 @@ export function FahrraederDialog({ open, onClose, onSubmit, defaultValues, recor
         <Label htmlFor="modell">{fieldLabel('fahrraeder', 'modell')}</Label>
         <Input
           id="modell"
-          placeholder="z. B. Kathmandu Pro"
+          placeholder=""
           value={fields.modell ?? ''}
           onChange={e => setFields(f => ({ ...f, modell: e.target.value }))}
         />
@@ -402,9 +402,10 @@ export function FahrraederDialog({ open, onClose, onSubmit, defaultValues, recor
           value={lookupKey(fields.fahrradtyp) ?? ''}
           onValueChange={v => setFields(f => ({ ...f, fahrradtyp: v === 'none' ? undefined : v as any }))}
         >
-          <SelectTrigger id="fahrradtyp" className="max-sm:h-11"><SelectValue placeholder="z. B. Citybike, E-Bike" /></SelectTrigger>
+          <SelectTrigger id="fahrradtyp" className="max-sm:h-11"><SelectValue placeholder="" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="none">—</SelectItem>
+            <SelectItem value="citybike">{lookupLabel('fahrraeder', 'fahrradtyp', 'citybike') ?? 'Citybike'}</SelectItem>
             <SelectItem value="trekkingrad">{lookupLabel('fahrraeder', 'fahrradtyp', 'trekkingrad') ?? 'Trekkingrad'}</SelectItem>
             <SelectItem value="mountainbike">{lookupLabel('fahrraeder', 'fahrradtyp', 'mountainbike') ?? 'Mountainbike'}</SelectItem>
             <SelectItem value="rennrad">{lookupLabel('fahrraeder', 'fahrradtyp', 'rennrad') ?? 'Rennrad'}</SelectItem>
@@ -412,7 +413,6 @@ export function FahrraederDialog({ open, onClose, onSubmit, defaultValues, recor
             <SelectItem value="kinderrad">{lookupLabel('fahrraeder', 'fahrradtyp', 'kinderrad') ?? 'Kinderrad'}</SelectItem>
             <SelectItem value="lastenrad">{lookupLabel('fahrraeder', 'fahrradtyp', 'lastenrad') ?? 'Lastenrad'}</SelectItem>
             <SelectItem value="sonstiges">{lookupLabel('fahrraeder', 'fahrradtyp', 'sonstiges') ?? 'Sonstiges'}</SelectItem>
-            <SelectItem value="citybike">{lookupLabel('fahrraeder', 'fahrradtyp', 'citybike') ?? 'Citybike'}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -422,7 +422,7 @@ export function FahrraederDialog({ open, onClose, onSubmit, defaultValues, recor
         <Label htmlFor="rahmengroesse">{fieldLabel('fahrraeder', 'rahmengroesse')}</Label>
         <Input
           id="rahmengroesse"
-          placeholder="z. B. 54 cm"
+          placeholder=""
           value={fields.rahmengroesse ?? ''}
           onChange={e => setFields(f => ({ ...f, rahmengroesse: e.target.value }))}
         />
@@ -433,7 +433,7 @@ export function FahrraederDialog({ open, onClose, onSubmit, defaultValues, recor
         <Label htmlFor="rahmennummer">{fieldLabel('fahrraeder', 'rahmennummer')}</Label>
         <Input
           id="rahmennummer"
-          placeholder="z. B. WTU123456789"
+          placeholder=""
           value={fields.rahmennummer ?? ''}
           onChange={e => setFields(f => ({ ...f, rahmennummer: e.target.value }))}
         />
@@ -444,7 +444,7 @@ export function FahrraederDialog({ open, onClose, onSubmit, defaultValues, recor
         <Label htmlFor="farbe">{fieldLabel('fahrraeder', 'farbe')}</Label>
         <Input
           id="farbe"
-          placeholder="z. B. Anthrazit"
+          placeholder=""
           value={fields.farbe ?? ''}
           onChange={e => setFields(f => ({ ...f, farbe: e.target.value }))}
         />
@@ -455,7 +455,7 @@ export function FahrraederDialog({ open, onClose, onSubmit, defaultValues, recor
         <Label htmlFor="kaufdatum">{fieldLabel('fahrraeder', 'kaufdatum')}</Label>
         <DatePicker
           id="kaufdatum"
-          placeholder="Wann wurde es gekauft?"
+          placeholder=""
           mode="date"
           value={fields.kaufdatum ?? null}
           onChange={v => setFields(f => ({ ...f, kaufdatum: v ?? undefined }))}

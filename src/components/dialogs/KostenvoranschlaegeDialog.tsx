@@ -299,7 +299,7 @@ export function KostenvoranschlaegeDialog({ open, onClose, onSubmit, defaultValu
         }
       }
       const photoContext = contextParts.length ? contextParts.join('\n') : undefined;
-      const schema = `{\n  "reparaturauftrag": string | null, // Display name from Reparaturaufträge (see <available-records>)\n  "datum": string | null, // YYYY-MM-DD\n  "positionen": string | null, // Beschreibung der Positionen\n  "ersatzteile": string[] | null, // Display names from Ersatzteile, one per referenced record (see <available-records>)\n  "gesamtbetrag": number | null, // Gesamtbetrag in Euro\n  "freigabe_status": LookupValue | null, // Status der Freigabe (select one key: "freigegeben" | "abgelehnt" | "offen") mapping: freigegeben=Freigegeben, abgelehnt=Abgelehnt, offen=Offen\n  "bemerkung": string | null, // Bemerkung\n}`;
+      const schema = `{\n  "reparaturauftrag": string | null, // Display name from Reparaturaufträge (see <available-records>)\n  "datum": string | null, // YYYY-MM-DD\n  "positionen": string | null, // Beschreibung der Positionen\n  "ersatzteile": string[] | null, // Display names from Ersatzteile, one per referenced record (see <available-records>)\n  "gesamtbetrag": number | null, // Gesamtbetrag in Euro\n  "freigabe_status": LookupValue | null, // Status der Freigabe (select one key: "offen" | "freigegeben" | "abgelehnt") mapping: offen=Offen, freigegeben=Freigegeben, abgelehnt=Abgelehnt\n  "bemerkung": string | null, // Bemerkung\n}`;
       const raw = await extractFromInput<Record<string, unknown>>(schema, {
         dataUri: uri,
         userText: aiText.trim() || undefined,
@@ -381,7 +381,7 @@ export function KostenvoranschlaegeDialog({ open, onClose, onSubmit, defaultValu
         <Label htmlFor="reparaturauftrag">{fieldLabel('kostenvoranschlaege', 'reparaturauftrag')} <span className="text-destructive" aria-hidden="true">*</span></Label>
         <Combobox
           id="reparaturauftrag"
-          placeholder="Welcher Reparaturauftrag?"
+          placeholder=""
           items={reparaturauftraegeListAll.map(r => ({
             id: r.record_id,
             label: String(r.fields.problembeschreibung ?? r.record_id),
@@ -401,7 +401,7 @@ export function KostenvoranschlaegeDialog({ open, onClose, onSubmit, defaultValu
         <Label htmlFor="datum">{fieldLabel('kostenvoranschlaege', 'datum')} <span className="text-destructive" aria-hidden="true">*</span></Label>
         <DatePicker
           id="datum"
-          placeholder="Wann wurde der Voranschlag erstellt?"
+          placeholder=""
           mode="date"
           value={fields.datum ?? null}
           onChange={v => setFields(f => ({ ...f, datum: v ?? undefined }))}
@@ -417,7 +417,7 @@ export function KostenvoranschlaegeDialog({ open, onClose, onSubmit, defaultValu
         <Label htmlFor="positionen">{fieldLabel('kostenvoranschlaege', 'positionen')}</Label>
         <Textarea
           id="positionen"
-          placeholder="Eine Position pro Zeile"
+          placeholder=""
           value={fields.positionen ?? ''}
           onChange={e => setFields(f => ({ ...f, positionen: e.target.value }))}
           rows={3}
@@ -429,7 +429,7 @@ export function KostenvoranschlaegeDialog({ open, onClose, onSubmit, defaultValu
         <Label htmlFor="ersatzteile">{fieldLabel('kostenvoranschlaege', 'ersatzteile')}</Label>
         <MultiCombobox
           id="ersatzteile"
-          placeholder="Welche Ersatzteile?"
+          placeholder=""
           items={ersatzteileListAll.map(r => ({
             id: r.record_id,
             label: String(r.fields.bezeichnung ?? r.record_id),
@@ -450,7 +450,7 @@ export function KostenvoranschlaegeDialog({ open, onClose, onSubmit, defaultValu
           inputMode="decimal"
           step="any"
           {...numberInputProps(formEnhancements, 'gesamtbetrag')}
-          placeholder="z. B. 149,90"
+          placeholder=""
           value={fields.gesamtbetrag !== undefined ? fields.gesamtbetrag : (computedValues['gesamtbetrag'] ?? '')}
           onChange={e => setFields(f => ({ ...f, gesamtbetrag: clampNumberValue(formEnhancements, 'gesamtbetrag', e.target.value) }))}
         />
@@ -463,6 +463,19 @@ export function KostenvoranschlaegeDialog({ open, onClose, onSubmit, defaultValu
       <div key="freigabe_status" className="space-y-1.5">
         <Label htmlFor="freigabe_status">{fieldLabel('kostenvoranschlaege', 'freigabe_status')} <span className="text-destructive" aria-hidden="true">*</span></Label>
         <div role="radiogroup" className="flex flex-wrap gap-1.5">
+          <button
+            type="button"
+            role="radio"
+            aria-checked={lookupKey(fields.freigabe_status) === 'offen'}
+            onClick={() => setFields(f => ({ ...f, freigabe_status: (lookupKey(f.freigabe_status) === 'offen' ? undefined : 'offen') as any }))}
+            className={`inline-flex items-center justify-center min-h-9 max-sm:min-h-11 max-sm:px-4 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+              lookupKey(fields.freigabe_status) === 'offen'
+                ? 'bg-foreground text-background border-foreground'
+                : 'bg-background text-foreground border-input hover:bg-accent'
+            }`}
+          >
+            {lookupLabel('kostenvoranschlaege', 'freigabe_status', 'offen') ?? 'Offen'}
+          </button>
           <button
             type="button"
             role="radio"
@@ -489,19 +502,6 @@ export function KostenvoranschlaegeDialog({ open, onClose, onSubmit, defaultValu
           >
             {lookupLabel('kostenvoranschlaege', 'freigabe_status', 'abgelehnt') ?? 'Abgelehnt'}
           </button>
-          <button
-            type="button"
-            role="radio"
-            aria-checked={lookupKey(fields.freigabe_status) === 'offen'}
-            onClick={() => setFields(f => ({ ...f, freigabe_status: (lookupKey(f.freigabe_status) === 'offen' ? undefined : 'offen') as any }))}
-            className={`inline-flex items-center justify-center min-h-9 max-sm:min-h-11 max-sm:px-4 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
-              lookupKey(fields.freigabe_status) === 'offen'
-                ? 'bg-foreground text-background border-foreground'
-                : 'bg-background text-foreground border-input hover:bg-accent'
-            }`}
-          >
-            {lookupLabel('kostenvoranschlaege', 'freigabe_status', 'offen') ?? 'Offen'}
-          </button>
         </div>
         {showErrors && !fields.freigabe_status && (
           <p className="text-xs text-destructive mt-1" role="alert">{requiredMessage('kostenvoranschlaege', 'freigabe_status')}</p>
@@ -513,7 +513,7 @@ export function KostenvoranschlaegeDialog({ open, onClose, onSubmit, defaultValu
         <Label htmlFor="bemerkung">{fieldLabel('kostenvoranschlaege', 'bemerkung')}</Label>
         <Textarea
           id="bemerkung"
-          placeholder="Hinweise zum Voranschlag"
+          placeholder=""
           value={fields.bemerkung ?? ''}
           onChange={e => setFields(f => ({ ...f, bemerkung: e.target.value }))}
           rows={3}
@@ -540,7 +540,7 @@ export function KostenvoranschlaegeDialog({ open, onClose, onSubmit, defaultValu
   // eine Map { lookupKey: label } für ALLE Felder des Target-Schemas. Wird
   // beim Render-Walk gefiltert auf die in der computed-Formel tatsächlich
   // referenzierten lookupKeys (siehe applookupRefs unten).
-  const APPLOOKUP_LABELS: Record<string, Record<string, string>> = {"reparaturauftrag": {"kunde": "Kunde", "fahrrad": "Fahrrad", "problembeschreibung": "Problembeschreibung", "wunschtermin": "Wunschtermin für die Anmeldung", "uebergabetermin": "Termin für die Übergabe", "prioritaet": "Priorität", "status": "Status"}, "ersatzteile": {"bezeichnung": "Bezeichnung", "artikelnummer": "Artikelnummer", "preis": "Preis in Euro", "lagerbestand": "Lagerbestand"}};
+  const APPLOOKUP_LABELS: Record<string, Record<string, string>> = {"reparaturauftrag": {"kunde": "Kunde", "fahrrad": "Fahrrad", "problembeschreibung": "Problembeschreibung", "wunschtermin": "Wunschtermin für die Anmeldung", "uebergabetermin": "Termin für die Übergabe", "prioritaet": "Priorität", "status": "Status"}, "ersatzteile": {"bezeichnung": "Bezeichnung", "artikelnummer": "Artikelnummer", "preis": "Preis in Euro", "lagerbestand": "Lagerbestand", "lieferant": "Lieferant"}};
   const inputFields = useMemo(() => flattenFieldOrder(orderedFields), [orderedFieldsKey]);
   const backendFieldSet = useMemo(() => new Set(inputFields), [inputFields.join(',')]);
   const virtualComputed = useMemo(

@@ -43,10 +43,10 @@ export interface IntentLink {
 
 export const INTENTS: IntentLink[] = [
   // <custom:intents>
-  { path: '/intents/auftrag-annehmen', label: { de: 'Reparaturauftrag annehmen', en: 'Accept repair order' }, icon: IconTool, description: 'Kunde und Fahrrad auswählen oder neu erfassen und den Reparaturauftrag anlegen.' },
-  { path: '/intents/kostenvoranschlag-erstellen', label: { de: 'Kostenvoranschlag erstellen', en: 'Create cost estimate' }, icon: IconFileInvoice, description: 'Ersatzteile wählen, Kostenvoranschlag anlegen und Auftrag auf Freigabe warten lassen.' },
-  { path: '/intents/freigabe-erfassen', label: { de: 'Freigabe erfassen', en: 'Record approval' }, icon: IconChecklist, description: 'Entscheidung des Kunden zum Kostenvoranschlag festhalten und Auftragsstatus setzen.' },
-  { path: '/intents/auftrag-abschliessen', label: { de: 'Auftrag abschließen und übergeben', en: 'Complete and hand over order' }, icon: IconCircleCheck, description: 'Fertige Aufträge als fertig melden und bei Abholung als übergeben abschließen.' },
+  { path: '/intents/auftrag-annehmen', label: { de: 'Reparaturauftrag annehmen', en: 'Accept repair order' }, icon: IconTool, description: { de: 'Kunde und Fahrrad auswählen oder neu erfassen und den Reparaturauftrag anlegen.', en: 'Select or create the customer and bike, and create the repair order.' } },
+  { path: '/intents/kostenvoranschlag-erstellen', label: { de: 'Kostenvoranschlag erstellen', en: 'Create cost estimate' }, icon: IconFileInvoice, description: { de: 'Ersatzteile wählen, Kostenvoranschlag anlegen und Auftrag auf Freigabe warten lassen.', en: 'Select spare parts, create a cost estimate, and set the order to await approval.' } },
+  { path: '/intents/freigabe-erfassen', label: { de: 'Freigabe erfassen', en: 'Record approval' }, icon: IconChecklist, description: { de: 'Entscheidung des Kunden zum Kostenvoranschlag festhalten und Auftragsstatus setzen.', en: 'Record the customer\'s decision on the cost estimate and set the order status.' } },
+  { path: '/intents/auftrag-abschliessen', label: { de: 'Auftrag abschließen und übergeben', en: 'Complete and hand over order' }, icon: IconCircleCheck, description: { de: 'Fertige Aufträge als fertig melden und bei Abholung als übergeben abschließen.', en: 'Mark completed orders as ready and close them as handed over upon pickup.' } },
   // </custom:intents>
 ];
 
@@ -66,5 +66,5 @@ export const INTENTS_PENDING = false;
  * pulsing "werden erstellt …" in every deployed Phase-1 bundle forever — no
  * code path redeploys Phase 1 without the flag (live 03.09.2026).
  */
-export const INTENTS_PENDING_SINCE: string | null = '2026-10-08T09:25:17+00:00';
+export const INTENTS_PENDING_SINCE: string | null = null;
 export const PENDING_MAX_MINUTES = 30;
