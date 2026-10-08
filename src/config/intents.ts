@@ -20,6 +20,7 @@
 import type { ComponentType } from 'react';
 
 // <custom:intent-imports>
+import { IconTool, IconFileInvoice, IconChecklist, IconCircleCheck } from '@tabler/icons-react';
 // </custom:intent-imports>
 
 export interface IntentLink {
@@ -42,6 +43,10 @@ export interface IntentLink {
 
 export const INTENTS: IntentLink[] = [
   // <custom:intents>
+  { path: '/intents/auftrag-annehmen', label: { de: 'Reparaturauftrag annehmen', en: 'Accept repair order' }, icon: IconTool, description: 'Kunde und Fahrrad auswählen oder neu erfassen und den Reparaturauftrag anlegen.' },
+  { path: '/intents/kostenvoranschlag-erstellen', label: { de: 'Kostenvoranschlag erstellen', en: 'Create cost estimate' }, icon: IconFileInvoice, description: 'Ersatzteile wählen, Kostenvoranschlag anlegen und Auftrag auf Freigabe warten lassen.' },
+  { path: '/intents/freigabe-erfassen', label: { de: 'Freigabe erfassen', en: 'Record approval' }, icon: IconChecklist, description: 'Entscheidung des Kunden zum Kostenvoranschlag festhalten und Auftragsstatus setzen.' },
+  { path: '/intents/auftrag-abschliessen', label: { de: 'Auftrag abschließen und übergeben', en: 'Complete and hand over order' }, icon: IconCircleCheck, description: 'Fertige Aufträge als fertig melden und bei Abholung als übergeben abschließen.' },
   // </custom:intents>
 ];
 
@@ -52,7 +57,7 @@ export const INTENTS: IntentLink[] = [
  * purpose — a scaffold update resets it to false (self-healing if Phase 2
  * never ran).
  */
-export const INTENTS_PENDING = true;
+export const INTENTS_PENDING = false;
 
 /**
  * When the Phase-1 bundle was deployed (ISO, set by the service together with

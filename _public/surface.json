@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "pages": [
+    {
+      "slug": "reparaturtermin-anmelden",
+      "component": "ReparaturterminAnmelden",
+      "title": "Reparaturtermin anmelden",
+      "endpoints": [
+        {
+          "entity": "kunden",
+          "op": "create",
+          "fields": [
+            "kunde_vorname",
+            "kunde_nachname",
+            "email",
+            "telefon",
+            "strasse",
+            "hausnummer",
+            "plz",
+            "ort"
+          ]
+        },
+        {
+          "entity": "fahrraeder",
+          "op": "create",
+          "fields": [
+            "besitzer",
+            "marke",
+            "modell",
+            "fahrradtyp",
+            "rahmengroesse",
+            "farbe",
+            "kaufdatum"
+          ]
+        },
+        {
+          "entity": "reparaturauftraege",
+          "op": "create",
+          "fields": [
+            "kunde",
+            "fahrrad",
+            "problembeschreibung",
+            "wunschtermin"
+          ],
+          "preset_fields": {
+            "status": "angemeldet"
+          }
+        }
+      ]
+    }
+  ]
+}
